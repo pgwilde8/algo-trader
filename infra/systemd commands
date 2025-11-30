@@ -1,0 +1,65 @@
+# Copy service file
+sudo cp /home/myalgo/algo-trader/infra/usdjpy-ml5-signal-service.service /etc/systemd/system/
+
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Enable on boot
+sudo systemctl enable usdjpy-ml5-signal-service.service
+
+# Start service
+sudo systemctl start usdjpy-ml5-signal-service.service
+
+# Check status
+sudo systemctl status usdjpy-ml5-signal-service.service
+
+# Follow logs in real-time
+sudo journalctl -u usdjpy-ml5-signal-service.service -f
+
+# View recent logs
+sudo journalctl -u usdjpy-ml5-signal-service.service -n 50
+=========
+### Check Status
+```bash
+sudo systemctl status eurusd-ml5-signal-service.service
+sudo systemctl status eurusd-ml5-signal-service.service
+```
+
+### View Logs
+```bash
+# View all logs
+sudo journalctl -u eurusd-ml5-signal-service.service
+
+# Follow logs in real-time
+sudo journalctl -u eurusd-ml5-signal-service.service -f
+
+# View last 100 lines
+sudo journalctl -u eurusd-ml5-signal-service.service -n 100
+
+# View logs since today
+sudo journalctl -u eurusd-ml5-signal-service.service --since today
+```
+
+### Control Service
+```bash
+# Start
+sudo systemctl start eurusd-ml5-signal-service.service
+
+# Stop
+sudo systemctl stop eurusd-ml5-signal-service.service
+
+# Restart
+sudo systemctl restart eurusd-ml5-signal-service.service
+
+# Reload (graceful restart)
+sudo systemctl reload eurusd-ml5-signal-service.service
+```
+
+### Disable/Enable
+```bash
+# Disable from starting on boot
+sudo systemctl disable eurusd-ml5-signal-service.service
+
+# Enable to start on boot
+sudo systemctl enable eurusd-ml5-signal-service.service
+==========

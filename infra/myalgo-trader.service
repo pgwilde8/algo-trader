@@ -1,0 +1,25 @@
+[Unit]
+Description=MyAlgo Trader FastAPI Application
+After=network.target postgresql.service
+Wants=network.target
+
+[Service]
+Type=exec
+User=root
+Group=root
+WorkingDirectory=/home/myalgo/algo-trader
+Environment="PATH=/home/myalgo/algo-trader/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="PYTHONPATH=/home/myalgo/algo-trader"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/home/myalgo/algo-trader/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8888
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=30
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,12 @@
+{
+  "instrument": "EUR_USD",
+  "cycle_interval_seconds": 3600,
+  "same_direction_cooldown": 1800,
+  "model_dir": "/home/myalgo/algo-trader/ml_models/signal_generator/eurusd-models",
+  "data_dir": "/home/myalgo/algo-trader/data/h1_data",
+  "data_file": "EUR_USD_H1_20051202_to_20251127.csv",
+  "candles_count": 250,
+  "ensemble_seeds": [43, 44, 45, 46, 47],
+  "description": "EUR/USD ML5 Ensemble Signal Service - Generates signals using 5-model XGBoost ensemble and saves to database"
+}
+

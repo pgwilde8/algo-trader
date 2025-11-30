@@ -1,0 +1,25 @@
+[Unit]
+Description=GBP/USD ML5 Ensemble Signal Service
+After=network.target postgresql.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/home/myalgo/algo-trader/app/services/signal-service/gbpusd-ml5
+Environment="PATH=/home/myalgo/algo-trader/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="PYTHONPATH=/home/myalgo/algo-trader"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/home/myalgo/algo-trader/venv/bin/python3 /home/myalgo/algo-trader/app/services/signal-service/gbpusd-ml5/main.py
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Signals - MyAlgoAgent.com</title>
+    
+    <!-- Favicon Links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-bottom: 2px solid #00b894;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #00b894;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #00b894, #81ecec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #81ecec;
+            margin-top: 10px;
+        }
+
+        .signals-list {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .signal-item {
+            display: grid;
+            grid-template-columns: 200px 1fr auto;
+            align-items: start;
+            gap: 20px;
+            padding: 25px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .signal-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #00b894;
+            transform: translateX(5px);
+        }
+
+        .asset-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #81ecec;
+        }
+
+        .signal-status {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .signal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-item {
+            font-size: 0.9em;
+            color: #b0b0b0;
+        }
+
+        .detail-label {
+            color: #81ecec;
+            font-weight: 500;
+            margin-right: 6px;
+        }
+
+        .detail-value {
+            color: #f0f0f0;
+        }
+
+        .signal-badge {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .signal-buy {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            border: 1px solid #00a085;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+        }
+
+        .signal-sell {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: 1px solid #c0392b;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .signal-neutral {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+            border: 1px solid #7f8c8d;
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        .confidence {
+            font-size: 0.9em;
+            color: #b0b0b0;
+            font-style: italic;
+        }
+
+        .no-signals {
+            text-align: center;
+            padding: 60px 20px;
+            color: #95a5a6;
+            font-size: 1.2em;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #81ecec;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #00b894;
+            text-decoration: underline;
+        }
+
+        .refresh-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(0, 184, 148, 0.1);
+            border-radius: 8px;
+            color: #81ecec;
+            font-size: 0.9em;
+        }
+
+        .cta-button {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95em;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #00a085;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.2);
+            white-space: nowrap;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(45deg, #00a085, #00b894);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .signal-item {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
+
+            .signal-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .signal-status {
+                margin-top: 10px;
+            }
+
+            .signal-details {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-button {
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>📊 Multi-Signals</h1>
+            <p class="subtitle">Live ML5 Trading Signals Across All Assets</p>
+        </div>
+
+        <div class="signals-list">
+            {% if signals %}
+                {% for signal in signals %}
+                <div class="signal-item">
+                    <div class="asset-name">{{ signal.instrument.replace('_', '/') }}</div>
+                    {% if signal.direction %}
+                        {# Signal exists - show full details #}
+                        <div class="signal-status">
+                            <div class="signal-header">
+                                {% if signal.direction == "BUY" %}
+                                    <div class="signal-badge signal-buy">🟢 BUY</div>
+                                {% elif signal.direction == "SELL" %}
+                                    <div class="signal-badge signal-sell">🔴 SELL</div>
+                                {% else %}
+                                    <div class="signal-badge signal-neutral">⚪ NO TRADE</div>
+                                {% endif %}
+                                <span class="confidence">Confidence: {{ signal.confidence }} ({{ (signal.ml_probability * 100) | round | int }}%)</span>
+                            </div>
+                            <div class="signal-details">
+                                {% if signal.entry_price %}
+                                <div class="detail-item">
+                                    <span class="detail-label">Entry Price:</span>
+                                    <span class="detail-value">
+                                        {% if signal.instrument.endswith('_JPY') %}
+                                            {{ "%.3f"|format(signal.entry_price) }}
+                                        {% else %}
+                                            {{ "%.5f"|format(signal.entry_price) }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                {% endif %}
+                                <div class="detail-item">
+                                    <span class="detail-label">ML Probability:</span>
+                                    <span class="detail-value">{{ (signal.ml_probability * 100) | round | int }}% (5-model average)</span>
+                                </div>
+                                {% if signal.timestamp %}
+                                <div class="detail-item">
+                                    <span class="detail-label">Signal Generated:</span>
+                                    <span class="detail-value">{{ signal.timestamp.strftime('%Y-%m-%d %H:%M') }} UTC</span>
+                                </div>
+                                {% endif %}
+                                {% if signal.valid_until %}
+                                <div class="detail-item">
+                                    <span class="detail-label">Valid Until:</span>
+                                    <span class="detail-value">{{ signal.valid_until.strftime('%Y-%m-%d %H:%M') }} UTC</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        {# No signal yet - show placeholder #}
+                        <div class="signal-status">
+                            <div class="signal-header">
+                                <div class="signal-badge signal-neutral">⚪ NO SIGNAL</div>
+                                <span class="confidence">(Service starting...)</span>
+                            </div>
+                            <div class="signal-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Status:</span>
+                                    <span class="detail-value">Signal service initializing or waiting for first signal</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="/ml5-trader/{{ signal.instrument.lower().replace('_', '') }}" class="cta-button">
+                        🤖 Get ML5 Auto Trader
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-signals">
+                    📡 No signals available at the moment. Signals will appear here as they are generated.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="refresh-info">
+            🔄 Signals update automatically. Refresh the page to see the latest signals.
+        </div>
+    </div>
+</body>
+</html>
+

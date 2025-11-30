@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML5 Trader - GBP/USD | Let Five AI Models Vote, But Let Math Make the Call | MyAlgoAgent.com</title>
+    
+    <!-- Favicon Links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #81ecec;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1em;
+        }
+
+        .back-link:hover {
+            color: #00b894;
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.1);
+            border-bottom: 3px solid #00b894;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            color: #00b894;
+            margin: 0 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #00b894, #81ecec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 1.8em;
+            color: #81ecec;
+            margin-bottom: 30px;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2em;
+            color: #b0b0b0;
+            max-width: 900px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            padding: 18px 45px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border: 2px solid #00a085;
+            box-shadow: 0 4px 20px rgba(0, 184, 148, 0.3);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.5);
+        }
+
+        /* Section Styles */
+        .section {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            font-size: 2.2em;
+            color: #00b894;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .section h3 {
+            font-size: 1.6em;
+            color: #81ecec;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .section p {
+            color: #b0b0b0;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .section code {
+            background: rgba(0, 184, 148, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #81ecec;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Feature Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: #00b894;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.2);
+        }
+
+        .feature-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h4 {
+            color: #00b894;
+            font-size: 1.3em;
+            margin: 0 0 10px 0;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            margin: 0;
+            font-size: 1em;
+        }
+
+        /* Benefits List */
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+        }
+
+        .benefits-list li {
+            color: #b0b0b0;
+            font-size: 1.1em;
+            padding: 15px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .benefits-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #00b894;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #00b894;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: #81ecec;
+            margin-top: 10px;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00b894, #00a085);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+        }
+
+        .step h4 {
+            color: #81ecec;
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+        }
+
+        .step p {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            margin: 0;
+        }
+
+        /* Logic Box */
+        .logic-box {
+            background: rgba(0, 184, 148, 0.1);
+            border-left: 4px solid #00b894;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .logic-box p {
+            margin: 0;
+            color: #81ecec;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 60px 0;
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.3);
+        }
+
+        .final-cta h2 {
+            color: white;
+            font-size: 2.5em;
+            margin: 0 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .final-cta p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            background: white;
+            color: #00b894;
+            padding: 18px 45px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .cta-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #00b894;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .highlight-box p {
+            font-size: 1.2em;
+            color: #81ecec;
+            margin: 10px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero .tagline {
+                font-size: 1.3em;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>🤖 ML5 Trader</h1>
+            <p class="tagline">Let Five AI Models Vote, But Let Math Make the Call</p>
+            <p class="subtitle">
+                You don't need a single trading guru.<br><br>
+                You need <strong>five machine learning models</strong> giving their unique take on GBP/USD.<br><br>
+                Then, you let math do what it does best: <strong>average their opinions</strong> and tell you when to move.<br><br>
+                Welcome to <strong>ML5 Trader</strong> — the auto-trading bot that combines machine intelligence, historical insight, and a healthy dose of probability-powered patience.
+            </p>
+            <a href="#get-started" class="cta-primary">🚀 See What 5 AIs Think — Trade Smarter</a>
+
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">AI Models Voting</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">20</div>
+                <div class="stat-label">Years of Training Data</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">13</div>
+                <div class="stat-label">Technical Indicators</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Automated Trading</div>
+            </div>
+        </div>
+
+        <!-- Picture Section -->
+        <div class="section">
+            <h2>🧠 Picture This: A 5-Model Trading Think Tank</h2>
+            <p>
+                Each XGBoost model is trained on 20 years of GBP/USD data, with a slightly different seed (that's tech-speak for a randomized training variation).
+            </p>
+            <p>
+                They all watch the same market… but think differently.
+            </p>
+            <p>
+                Every hour, they vote:
+            </p>
+            <ul class="benefits-list">
+                <li>Some may yell <strong style="color: #00b894;">BUY</strong></li>
+                <li>Some may whisper <strong style="color: #e74c3c;">SELL</strong></li>
+                <li>Some might just shrug</li>
+            </ul>
+            <p>
+                <strong>The average of those opinions = your signal.</strong>
+            </p>
+            <p>
+                Strong average? You trade.<br>
+                Split opinions? You chill.
+            </p>
+
+            <div class="how-it-works">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>5 Models Vote</h4>
+                    <p>Each model analyzes market conditions and produces a probability (0-100%)</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Math Averages</h4>
+                    <p>The system calculates the average of all 5 predictions</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Signal Generated</h4>
+                    <p>Based on the average: BUY, SELL, or NEUTRAL</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Trade or Wait</h4>
+                    <p>Strong signal? Trade executes. Uncertain? System stays neutral</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promise Section -->
+        <div class="section">
+            <h2>✅ The Promise: Probabilities Over Predictions</h2>
+            <p>No crystal balls. No wild guesses. Just calculated decisions.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon">🎯</div>
+                    <h4>Averaged Intelligence</h4>
+                    <p>5 models = fewer blind spots</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🕐</div>
+                    <h4>Hourly Signal Generation</h4>
+                    <p>Fresh signals every hour</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📈</div>
+                    <h4>Data-Driven Trade Logic</h4>
+                    <p>13 indicators + ensemble analysis</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚙️</div>
+                    <h4>Fully Automated Execution</h4>
+                    <p>Via OANDA API</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔧</div>
+                    <h4>You Control the Risk</h4>
+                    <p>Choose between 1–5%</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔍</div>
+                    <h4>Confidence Transparency</h4>
+                    <p>Every signal comes with a confidence level</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🧯</div>
+                    <h4>Built-in Safeguards</h4>
+                    <p>ATR-based stops, position sizing, news filters</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prove It Section -->
+        <div class="section">
+            <h2>🔬 Prove It: No Magic, Just Math</h2>
+            <p>
+                Each model file (<code>GBP_USD_xgboost_seed43.json</code> to <code>seed47.json</code>) is a trained AI brain packed with market knowledge.
+            </p>
+            <p>
+                They process:
+            </p>
+            <ul class="benefits-list">
+                <li>RSI, MACD, EMAs, ATR, momentum, volatility, and more</li>
+            </ul>
+            <p>
+                Each produces a probability (0.0 to 1.0)
+            </p>
+            <p>
+                <strong>ML5 Trader averages the five and classifies the outcome:</strong>
+            </p>
+            
+            <div class="logic-box">
+                <p>&gt; 60% → <strong style="color: #00b894;">BUY</strong></p>
+                <p>&lt; 40% → <strong style="color: #e74c3c;">SELL</strong></p>
+                <p>40–60% → <strong style="color: #95a5a6;">NEUTRAL</strong> (no trade)</p>
+            </div>
+
+            <p>
+                It's like letting five smart analysts each read the chart — but only acting when the collective logic leans hard enough in one direction.
+            </p>
+
+            <h3>Technical Indicators Analyzed</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Momentum</h4>
+                    <p>RSI (14-period), Price Momentum (1h, 4h, 24h)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Trend</h4>
+                    <p>MACD with signal line, EMA 20/50/200</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Volatility</h4>
+                    <p>ATR (14-period), 24-hour rolling standard deviation</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Price Position</h4>
+                    <p>Position within 24-hour range, High-Low analysis</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Push Section -->
+        <div class="section">
+            <h2>🚀 Push: Stop Trading Alone. Let the Ensemble Help.</h2>
+            <p>If you're:</p>
+            <ul class="benefits-list">
+                <li>Tired of bots that shoot first and think later</li>
+                <li>Done second-guessing your own entries</li>
+                <li>Ready to test a system that actually explains why it acts...</li>
+            </ul>
+            <p>Then it's time to trust the math.</p>
+
+            <div class="highlight-box">
+                <p>🎛️ <strong>Customize your risk</strong></p>
+                <p>🧠 <strong>Rely on ensemble probability</strong></p>
+                <p>🧘‍♂️ <strong>Enjoy the discipline of AI</strong></p>
+                <p>💼 <strong>Automate your GBP/USD strategy</strong></p>
+            </div>
+        </div>
+
+        <!-- Final CTA -->
+        <div class="final-cta" id="get-started">
+            <h2>Ready to Let Math Make the Call?</h2>
+            <p>Try ML5 Trader at myalgoagent.com/ml5-trader</p>
+            <a href="/signup" class="cta-secondary">🎯 Let the Ensemble Trade for You — Try ML5 Free</a>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.9;">
+                <em>Because five AIs and a spreadsheet make a better trader than emotion ever could.</em>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

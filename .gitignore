@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Environment
+.env
+.env.local
+.env.backup
+.env.live
+.env.practice
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific - exclude all CSV/JSON files in data directory and subdirectories
+data/**/*.csv
+data/**/*.json
+!data/.gitkeep
+
+# Service logs
+app/services/signal-service/**/logs/
+app/services/**/*.log
+
+# ML Models - exclude entire directory (models can be regenerated from training scripts)
+ml_models/signal_generator/
+
+# Documentation
+README/
+

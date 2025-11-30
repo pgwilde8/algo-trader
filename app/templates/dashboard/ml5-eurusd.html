@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML5 Trader Dashboard - {{ asset_display if asset_display else 'EUR/USD' }} | MyAlgoAgent.com</title>
+    
+    <!-- Favicon Links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #81ecec;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1em;
+        }
+
+        .back-link:hover {
+            color: #00b894;
+            text-decoration: underline;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-bottom: 2px solid #00b894;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #00b894;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #00b894, #81ecec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #81ecec;
+            margin-top: 10px;
+        }
+
+        /* Models Grid */
+        .models-section {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .models-section h2 {
+            font-size: 2em;
+            color: #00b894;
+            margin: 0 0 30px 0;
+            text-align: center;
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .model-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .model-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: #00b894;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.2);
+        }
+
+        .model-card.seed-43 { border-left: 4px solid #00b894; }
+        .model-card.seed-44 { border-left: 4px solid #81ecec; }
+        .model-card.seed-45 { border-left: 4px solid #00b894; }
+        .model-card.seed-46 { border-left: 4px solid #81ecec; }
+        .model-card.seed-47 { border-left: 4px solid #00b894; }
+
+        .model-seed {
+            font-size: 0.9em;
+            color: #81ecec;
+            margin-bottom: 10px;
+        }
+
+        .model-number {
+            font-size: 1.5em;
+            color: #00b894;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .model-probability {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .model-probability.buy {
+            color: #00b894;
+        }
+
+        .model-probability.sell {
+            color: #e74c3c;
+        }
+
+        .model-probability.neutral {
+            color: #95a5a6;
+        }
+
+        .model-direction {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 15px 0;
+            display: inline-block;
+        }
+
+        .model-direction.buy {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+        }
+
+        .model-direction.sell {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .model-direction.neutral {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .model-confidence {
+            font-size: 0.9em;
+            color: #b0b0b0;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Final Decision Section */
+        .final-decision {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .final-decision h2 {
+            font-size: 2em;
+            color: #00b894;
+            margin: 0 0 30px 0;
+        }
+
+        .decision-badge {
+            display: inline-block;
+            padding: 25px 50px;
+            border-radius: 15px;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .decision-badge.buy {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            border: 3px solid #00a085;
+        }
+
+        .decision-badge.sell {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: 3px solid #c0392b;
+        }
+
+        .decision-badge.neutral {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+            border: 3px solid #7f8c8d;
+        }
+
+        .decision-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .detail-label {
+            font-size: 0.9em;
+            color: #81ecec;
+            margin-bottom: 10px;
+        }
+
+        .detail-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00b894;
+        }
+
+        .detail-value.price {
+            color: #ffd700;
+        }
+
+        .no-signal {
+            text-align: center;
+            padding: 60px 20px;
+            color: #95a5a6;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 1px solid #333;
+            border-radius: 15px;
+        }
+
+        .refresh-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(0, 184, 148, 0.1);
+            border-radius: 8px;
+            color: #81ecec;
+            font-size: 0.9em;
+        }
+
+        .timestamp {
+            text-align: center;
+            color: #b0b0b0;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .models-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .decision-details {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>🤖 ML5 Trader Dashboard</h1>
+            <p class="subtitle">{{ asset_display if asset_display else 'EUR/USD' }} - Live Signal Analysis</p>
+        </div>
+
+        {% if signal %}
+            <!-- Individual Models Section -->
+            <div class="models-section">
+                <h2>🧠 Individual Model Predictions</h2>
+                <div class="models-grid">
+                    {% if signal.individual_models %}
+                        {% for model in signal.individual_models %}
+                        <div class="model-card seed-{{ model.seed }}">
+                            <div class="model-seed">Seed {{ model.seed }}</div>
+                            <div class="model-number">Model {{ model.model_num }}</div>
+                            <div class="model-probability {{ model.direction.lower() }}">
+                                {{ "%.1f"|format(model.probability * 100) }}%
+                            </div>
+                            <div class="model-direction {{ model.direction.lower() }}">
+                                {% if model.direction == "BUY" %}
+                                    🟢 BUY
+                                {% elif model.direction == "SELL" %}
+                                    🔴 SELL
+                                {% else %}
+                                    ⚪ NEUTRAL
+                                {% endif %}
+                            </div>
+                            <div class="model-confidence">{{ model.confidence }} Confidence</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-signal">
+                            <p>Individual model predictions not available</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Final Decision Section -->
+            <div class="final-decision">
+                <h2>🎯 Ensemble Final Decision</h2>
+                
+                <div class="decision-badge {{ signal.direction.lower() }}">
+                    {% if signal.direction == "BUY" %}
+                        🟢 BUY
+                    {% elif signal.direction == "SELL" %}
+                        🔴 SELL
+                    {% else %}
+                        ⚪ HOLD / NO TRADE
+                    {% endif %}
+                </div>
+
+                <div class="decision-details">
+                    <div class="detail-card">
+                        <div class="detail-label">Average Probability</div>
+                        <div class="detail-value">{{ "%.1f"|format(signal.ml_probability * 100) }}%</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-label">Confidence Level</div>
+                        <div class="detail-value">{{ signal.confidence }}</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-label">Entry Price</div>
+                        <div class="detail-value price">{{ "%.5f"|format(signal.entry_price) if signal.entry_price else 'N/A' }}</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-label">Ensemble Size</div>
+                        <div class="detail-value">{{ signal.ensemble_size }} Models</div>
+                    </div>
+                </div>
+
+                {% if signal.confidence_score %}
+                <div style="margin-top: 30px; padding: 20px; background: rgba(0, 184, 148, 0.1); border-radius: 12px;">
+                    <div style="color: #81ecec; font-size: 1.1em; margin-bottom: 10px;">Confidence Score</div>
+                    <div style="font-size: 2em; color: #00b894; font-weight: bold;">
+                        {{ "%.1f"|format(signal.confidence_score * 100) }}%
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="timestamp">
+                <strong>Signal Generated:</strong> {{ signal.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') if signal.timestamp else 'N/A' }}
+                {% if signal.valid_until %}
+                <br><strong>Valid Until:</strong> {{ signal.valid_until.strftime('%Y-%m-%d %H:%M:%S UTC') if signal.valid_until else 'N/A' }}
+                {% endif %}
+            </div>
+
+        {% else %}
+            <div class="no-signal">
+                <p>📡 No signal available for {{ asset_display if asset_display else 'EUR/USD' }} at the moment.</p>
+                <p>Signals will appear here as they are generated.</p>
+            </div>
+        {% endif %}
+
+        <div class="refresh-info">
+            🔄 Signals update automatically. Refresh the page to see the latest signal.
+        </div>
+    </div>
+</body>
+</html>
+
