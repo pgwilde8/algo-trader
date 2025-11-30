@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Policy - Trading Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .effective-date {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <h1>Refund Policy</h1>
+        
+        <div class="effective-date">
+            <strong>Effective Date:</strong> {{ effective_date or "January 1, 2024" }}
+        </div>
+
+        <h2>1. Overview</h2>
+        <p>This Refund Policy explains our practices regarding refunds for our automated trading bot services.</p>
+
+        <h2>2. Subscription Refunds</h2>
+        <p>Due to the nature of our automated trading services and the immediate access provided to trading algorithms:</p>
+        <ul>
+            <li>Monthly subscriptions are <strong>non-refundable</strong> once the service period has begun</li>
+            <li>Refunds may be considered within the first 24 hours of subscription for technical issues only</li>
+            <li>No refunds will be provided based on trading performance or losses</li>
+        </ul>
+
+        <h2>3. Technical Issues</h2>
+        <p>If you experience technical issues that prevent you from accessing our services:</p>
+        <ul>
+            <li>Contact our support team immediately</li>
+            <li>We will work to resolve technical issues promptly</li>
+            <li>Service credits may be provided for extended outages</li>
+        </ul>
+
+        <h2>4. Chargebacks</h2>
+        <p>Initiating a chargeback instead of contacting us directly may result in immediate termination of services.</p>
+
+        <h2>5. Contact Us</h2>
+        <p>For refund requests or questions about this policy, please contact us at:</p>
+        <p><strong>Email:</strong> support@tradingplatform.com</p>
+        <p><strong>Response Time:</strong> Within 24-48 hours</p>
+
+        <h2>6. Policy Changes</h2>
+        <p>We reserve the right to modify this refund policy at any time. Changes will be posted on this page with an updated effective date.</p>
+    </div>
+</body>
+</html>

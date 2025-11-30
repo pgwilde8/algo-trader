@@ -1,0 +1,11 @@
+{
+  "risk_percentage": 0.2,
+  "stop_loss_multiplier": 2.0,
+  "take_profit_multiplier": 3.0,
+  "min_confidence": "MEDIUM",
+  "max_positions": 1,
+  "cycle_interval_seconds": 3600,
+  "same_direction_cooldown": 1800,
+  "description": "USD/JPY ML Ensemble Auto Trader - Uses signal engine (rule-based for now, ML-ready) with risk management"
+}
+

@@ -1,0 +1,55 @@
+{
+    "asset_pair": "GBP_USD",
+    "strategy": "gbpusd_london_breakout",
+  
+    "risk_management": {
+      "risk_percentage": 0.04,
+      "max_positions": 1,
+      "max_trades_per_day": 3
+    },
+  
+    "session_times": {
+      "asian_start": "19:00",
+      "asian_end": "02:00",
+      "london_probe_start": "01:30",
+      "london_window_start": "02:15",
+      "london_window_end": "05:15",
+      "timezone": "America/New_York"
+    },
+  
+    "strategy_params": {
+      "min_asian_range_pips": 10,
+      "max_asian_range_pips": 80,
+      "breakout_buffer_pips": 2,
+      "initial_stop_pips": 15,
+      "atr_period": 5,
+      "atr_tp_bands": [
+        { "max_atr_pips": 8,  "tp_pips": 15 },
+        { "max_atr_pips": 12, "tp_pips": 22 },
+        { "max_atr_pips": 16, "tp_pips": 30 },
+        { "max_atr_pips": 999, "tp_pips": 36 }
+      ],
+      "probe_max_count": 3,
+      "trail_step_1_pips": 13,
+      "trail_sl_1_pips": -4,
+      "trail_step_2_pips": 20,
+      "trail_sl_2_pips": 1,
+      "trail_step_3_pips": 32,
+      "trail_sl_3_pips": 12
+    },
+  
+    "market_conditions": {
+      "max_spread_pips": 6.0,
+      "pip_value": 0.0001
+    },
+  
+    "news_avoidance": {
+      "enabled": true
+    },
+  
+    "logging": {
+      "log_level": "INFO",
+      "timezone": "America/New_York"
+    }
+  }
+  

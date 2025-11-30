@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - MyAlgoAgent</title>
+  
+  <!-- Favicon Links -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+  <link rel="shortcut icon" href="/static/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/images/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/static/images/android-chrome-512x512.png">
+  
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #f0f0f0;
+    }
+    
+    .login-container {
+      background: rgba(30, 30, 30, 0.95);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid #333;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .login-header h1 {
+      color: #00b894;
+      margin-bottom: 10px;
+      font-size: 2.2em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .login-header p {
+      color: #81ecec;
+      font-size: 1.1em;
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #f0f0f0;
+      font-size: 14px;
+    }
+    
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #444;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background: rgba(40, 40, 40, 0.8);
+      color: #f0f0f0;
+      transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: #00b894;
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 184, 148, 0.3);
+    }
+    
+    .login-button {
+      width: 100%;
+      background: linear-gradient(45deg, #00b894, #00a085);
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .login-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
+    }
+    
+    .login-button:disabled {
+      background: linear-gradient(45deg, #555, #444);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .error-message {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+      border: 1px solid #e74c3c;
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+    }
+    
+    .success-message {
+      background: rgba(0, 184, 148, 0.2);
+      color: #00b894;
+      border: 1px solid #00b894;
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+    }
+    
+    .footer-links {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #444;
+    }
+    
+    .footer-links a {
+      color: #00b894;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 0 10px;
+    }
+    
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+    
+    .credentials-help {
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid #ffc107;
+      color: #ffc107;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>🔐 Login</h1>
+      <p>Access your trading dashboard</p>
+    </div>
+    
+    <div id="error-message" class="error-message"></div>
+    <div id="success-message" class="success-message"></div>
+    
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required placeholder="Enter your username">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password">
+      </div>
+      
+      <button type="submit" class="login-button" id="login-btn">
+        Login to Dashboard
+      </button>
+    </form>
+    
+    <div class="credentials-help">
+      <strong>📧 Can't find your credentials?</strong><br>
+      Check your welcome email for your username and password.<br>
+      They were sent when you first purchased your bot.
+    </div>
+    
+    <div class="footer-links">
+      <a href="/">← Back to Home</a>
+      <a href="/risk-disclosure">Risk Disclosure</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+    </div>
+  </div>
+  
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const loginBtn = document.getElementById('login-btn');
+      const errorMsg = document.getElementById('error-message');
+      const successMsg = document.getElementById('success-message');
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Hide previous messages
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+      
+      // Disable button and show loading
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
+      
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: username, // We'll use username as email for now
+            password: password
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Login successful
+          successMsg.textContent = 'Login successful! Redirecting to dashboard...';
+          successMsg.style.display = 'block';
+          
+          // Store auth info and redirect
+          localStorage.setItem('auth_token', data.access_token);
+          localStorage.setItem('username', username);
+          
+          // Redirect to dashboard
+          setTimeout(() => {
+            window.location.href = `/dashboard-auth?username=${encodeURIComponent(username)}`;
+          }, 1000);
+          
+        } else {
+          // Login failed
+          errorMsg.textContent = data.detail || 'Invalid username or password';
+          errorMsg.style.display = 'block';
+        }
+        
+      } catch (error) {
+        console.error('Login error:', error);
+        errorMsg.textContent = 'Connection error. Please try again.';
+        errorMsg.style.display = 'block';
+      } finally {
+        // Re-enable button
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login to Dashboard';
+      }
+    });
+    
+    // Auto-fill username from URL parameter if provided
+    const urlParams = new URLSearchParams(window.location.search);
+    const usernameParam = urlParams.get('username');
+    if (usernameParam) {
+      document.getElementById('username').value = usernameParam;
+      document.getElementById('password').focus();
+    }
+  </script>
+</body>
+</html> 

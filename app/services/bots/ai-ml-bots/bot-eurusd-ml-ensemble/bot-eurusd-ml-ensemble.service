@@ -1,0 +1,17 @@
+[Unit]
+Description=EUR/USD ML Ensemble Auto Trader
+After=network.target
+
+[Service]
+Type=simple
+User=admintrader
+WorkingDirectory=/home/admintrader/tradermain/bots/bot-eurusd-ml-ensemble
+Environment="PATH=/home/admintrader/tradermain/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/admintrader/tradermain/venv/bin/python3 /home/admintrader/tradermain/bots/bot-eurusd-ml-ensemble/main.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

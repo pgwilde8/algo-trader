@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Trading Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #6f42c1;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .effective-date {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .important-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .terms-highlight {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <h1>Terms of Service</h1>
+        
+        <div class="effective-date">
+            <strong>Effective Date:</strong> {{ effective_date or "January 1, 2024" }}
+        </div>
+
+        <div class="important-notice">
+            By using our trading platform and services, you agree to be bound by these Terms of Service. Please read them carefully.
+        </div>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using our automated trading platform, you agree to comply with and be bound by these Terms of Service and all applicable laws and regulations.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>We provide automated trading bot services for forex, cryptocurrency, and other financial markets. Our services include:</p>
+        <ul>
+            <li>Automated trading algorithms and strategies</li>
+            <li>Account management and monitoring tools</li>
+            <li>Performance analytics and reporting</li>
+            <li>Customer support and platform maintenance</li>
+        </ul>
+
+        <h2>3. User Eligibility</h2>
+        <p>To use our services, you must:</p>
+        <ul>
+            <li>Be at least 18 years of age</li>
+            <li>Have legal capacity to enter into binding agreements</li>
+            <li>Comply with all applicable laws in your jurisdiction</li>
+            <li>Provide accurate and complete registration information</li>
+        </ul>
+
+        <h2>4. Account Registration and Security</h2>
+        <div class="terms-highlight">
+            <strong>Account Responsibilities:</strong>
+            <ul>
+                <li>Maintain confidentiality of your login credentials</li>
+                <li>Notify us immediately of any unauthorized access</li>
+                <li>Provide accurate and up-to-date account information</li>
+                <li>Use your account only for lawful purposes</li>
+            </ul>
+        </div>
+
+        <h2>5. Trading Risks and Disclaimers</h2>
+        <p>You acknowledge and agree that:</p>
+        <ul>
+            <li>Trading involves substantial risk of loss</li>
+            <li>Past performance does not guarantee future results</li>
+            <li>Our algorithms may not perform as expected</li>
+            <li>You are solely responsible for your trading decisions</li>
+            <li>We provide no investment advice or recommendations</li>
+        </ul>
+
+        <h2>6. Payment and Subscription Terms</h2>
+        <p>Subscription and payment terms:</p>
+        <ul>
+            <li>Monthly subscriptions are billed in advance</li>
+            <li>Payments are processed securely through Stripe</li>
+            <li>Subscriptions auto-renew unless cancelled</li>
+            <li>Refunds are subject to our Refund Policy</li>
+            <li>Prices may change with 30 days notice</li>
+        </ul>
+
+        <h2>7. Prohibited Activities</h2>
+        <p>You may not:</p>
+        <ul>
+            <li>Attempt to reverse engineer our algorithms</li>
+            <li>Use our services for illegal activities</li>
+            <li>Share your account credentials with others</li>
+            <li>Interfere with platform security or functionality</li>
+            <li>Violate any applicable laws or regulations</li>
+        </ul>
+
+        <h2>8. Intellectual Property</h2>
+        <p>All platform content, algorithms, and technology are our proprietary property and protected by intellectual property laws.</p>
+
+        <h2>9. Service Availability</h2>
+        <p>We strive to maintain 99% uptime but cannot guarantee uninterrupted service. We are not liable for:</p>
+        <ul>
+            <li>Temporary service interruptions</li>
+            <li>Scheduled maintenance periods</li>
+            <li>Third-party service failures</li>
+            <li>Force majeure events</li>
+        </ul>
+
+        <h2>10. Limitation of Liability</h2>
+        <div class="important-notice">
+            Our liability is limited to the amount you paid for services in the 12 months prior to any claim. We are not liable for any indirect, consequential, or punitive damages.
+        </div>
+
+        <h2>11. Indemnification</h2>
+        <p>You agree to indemnify and hold us harmless from any claims, losses, or damages arising from your use of our services or violation of these terms.</p>
+
+        <h2>12. Privacy and Data Protection</h2>
+        <p>Your privacy is important to us. Please review our Privacy Policy to understand how we collect, use, and protect your information.</p>
+
+        <h2>13. Termination</h2>
+        <p>We may terminate or suspend your account at any time for:</p>
+        <ul>
+            <li>Violation of these Terms of Service</li>
+            <li>Non-payment of subscription fees</li>
+            <li>Illegal or harmful activity</li>
+            <li>At our discretion with reasonable notice</li>
+        </ul>
+
+        <h2>14. Governing Law</h2>
+        <p>These terms are governed by the laws of [Your Jurisdiction]. Any disputes will be resolved through binding arbitration.</p>
+
+        <h2>15. Changes to Terms</h2>
+        <p>We may modify these terms at any time. Material changes will be communicated with 30 days notice. Continued use of our services constitutes acceptance of updated terms.</p>
+
+        <h2>16. Contact Information</h2>
+        <p>For questions about these Terms of Service:</p>
+        <p><strong>Email:</strong> legal@tradingplatform.com</p>
+        <p><strong>Response Time:</strong> Within 5 business days</p>
+
+        <div class="terms-highlight">
+            <strong>Last Updated:</strong> {{ effective_date or "January 1, 2024" }}<br>
+            <strong>Version:</strong> 1.0
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TraderMain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-refresh {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-refresh:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-logout:hover {
+            background: #c82333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f1f3f4;
+            padding-bottom: 0.5rem;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .card-icon {
+            font-size: 24px;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .status-healthy {
+            color: #10b981;
+        }
+        
+        .status-warning {
+            color: #f59e0b;
+        }
+        
+        .status-error {
+            color: #ef4444;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        
+        .progress-fill.danger {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+        
+        .alert-warning {
+            background: #fef3cd;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .alert-info {
+            background: #dbeafe;
+            border-color: #3b82f6;
+            color: #1e40af;
+        }
+        
+        .bots-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .bots-table th,
+        .bots-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .bots-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        .bots-table td {
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-running {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-stopped {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-unknown {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        /* News Management Styles */
+        .news-management {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .form-section h4, .upcoming-events h4 {
+            margin: 0 0 1rem 0;
+            color: #1f2937;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 2px solid #f1f3f4;
+            padding-bottom: 0.5rem;
+        }
+        
+        .news-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn-primary {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #b91c1c;
+        }
+        
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .news-event {
+            background: #fef3cd;
+            border: 1px solid #f59e0b;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        .news-event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .news-event-title {
+            font-weight: 600;
+            color: #92400e;
+        }
+        
+        .news-event-currency {
+            background: #dc2626;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .news-event-time {
+            font-size: 14px;
+            color: #92400e;
+            font-weight: 500;
+        }
+        
+        .news-event-countdown {
+            font-size: 12px;
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-management {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🤖 TraderMain Admin Dashboard</h1>
+            <div class="header-actions">
+                <span>Welcome, {{ admin_username }}!</span>
+                <button class="btn btn-refresh" onclick="refreshAllData()">
+                    🔄 Refresh
+                </button>
+                <a href="/admin-logout" class="btn btn-logout">
+                    🚪 Logout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Alerts Section -->
+        <div id="alerts-section"></div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- User Metrics Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">👥 User Metrics</span>
+                    <span class="card-icon">📊</span>
+                </div>
+                <div id="user-metrics">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading user data...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bot Status Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🤖 Bot Status</span>
+                    <span class="card-icon">⚡</span>
+                </div>
+                <div id="bot-metrics">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading bot data...
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🖥️ System Health</span>
+                    <span class="card-icon">📈</span>
+                </div>
+                <div id="system-health">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading system data...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💰 Revenue Summary</span>
+                    <span class="card-icon">💸</span>
+                </div>
+                <div id="revenue-summary">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading revenue data...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bot Details Table -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">🔍 Detailed Bot Status</span>
+                <span class="card-icon">📋</span>
+            </div>
+            <div id="bot-details">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading detailed bot information...
+                </div>
+            </div>
+        </div>
+
+        <!-- News Management Section -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📰 Red Folder News Management</span>
+                <span class="card-icon">⚠️</span>
+            </div>
+            <div class="news-management">
+                <div class="form-section">
+                    <h4>Add High-Impact ForexFactory News Event</h4>
+                    <form id="news-form" class="news-form">
+                        <div class="form-group">
+                            <label for="news-title">Event Title:</label>
+                            <input type="text" id="news-title" placeholder="e.g., Non-Farm Payrolls, FOMC Meeting" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="news-currency">Currency:</label>
+                                <select id="news-currency" required>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="CHF">CHF</option>
+                                    <option value="NZD">NZD</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="news-impact">Impact:</label>
+                                <select id="news-impact" required>
+                                    <option value="high" selected>🔴 High</option>
+                                    <option value="medium">🟡 Medium</option>
+                                    <option value="low">🟢 Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="news-date">Date:</label>
+                                <input type="date" id="news-date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="news-time">Time (EST):</label>
+                                <input type="time" id="news-time" required>
+                                <small style="color: #666; font-size: 12px;">Enter time in Eastern Time (EST/EDT)</small>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">🔴 Add Red Folder Event</button>
+                    </form>
+                </div>
+                
+                <div class="upcoming-events">
+                    <h4>Upcoming High-Impact Events (Next 7 Days)</h4>
+                    <div id="upcoming-news-list">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            Loading upcoming news events...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 30 seconds
+        setInterval(refreshAllData, 30000);
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshAllData();
+        });
+
+        async function refreshAllData() {
+            await Promise.all([
+                loadDashboardData(),
+                loadUserStats(),
+                loadBotDetails(),
+                loadSystemHealth(),
+                loadRevenueSummary(),
+                loadAlerts(),
+                loadUpcomingNews()
+            ]);
+        }
+
+        async function fetchJSON(url) {
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    credentials: 'same-origin',  // Include session cookies
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error(`Error fetching ${url}:`, error);
+                return null;
+            }
+        }
+
+        async function loadDashboardData() {
+            const data = await fetchJSON('/admin-api/dashboard');
+            if (!data) return;
+
+            // Update bot metrics
+            const botMetricsHtml = `
+                <div class="metric">
+                    <span class="metric-label">Total Bots</span>
+                    <span class="metric-value">${data.bots.total}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Running Bots</span>
+                    <span class="metric-value status-healthy">${data.bots.running}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Stopped Bots</span>
+                    <span class="metric-value status-error">${data.bots.stopped}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Uptime</span>
+                    <span class="metric-value">${data.bots.uptime_percentage}%</span>
+                </div>
+            `;
+            document.getElementById('bot-metrics').innerHTML = botMetricsHtml;
+        }
+
+        async function loadUserStats() {
+            const data = await fetchJSON('/admin-api/users/stats');
+            if (!data) {
+                document.getElementById('user-metrics').innerHTML = '<div class="error-message">Failed to load user statistics. Check console for details.</div>';
+                return;
+            }
+
+            const userMetricsHtml = `
+                <div class="metric">
+                    <span class="metric-label">Total Users</span>
+                    <span class="metric-value">${data.total_users}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">New Users (24h)</span>
+                    <span class="metric-value status-healthy">+${data.new_users_24h}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Active Subscribers</span>
+                    <span class="metric-value">${data.active_subscribers}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversion Rate</span>
+                    <span class="metric-value">${data.conversion_rates.subscription_rate}%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Bot Usage Rate</span>
+                    <span class="metric-value">${data.conversion_rates.bot_usage_rate}%</span>
+                </div>
+            `;
+            document.getElementById('user-metrics').innerHTML = userMetricsHtml;
+        }
+
+        async function loadSystemHealth() {
+            const data = await fetchJSON('/admin-api/system/health');
+            if (!data) return;
+
+            const cpuClass = data.cpu_percent > 80 ? 'danger' : data.cpu_percent > 60 ? 'warning' : '';
+            const memClass = data.memory_percent > 85 ? 'danger' : data.memory_percent > 70 ? 'warning' : '';
+            const diskClass = data.disk_percent > 90 ? 'danger' : data.disk_percent > 80 ? 'warning' : '';
+
+            const systemHealthHtml = `
+                <div class="metric">
+                    <span class="metric-label">CPU Usage</span>
+                    <span class="metric-value">${data.cpu_percent}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill ${cpuClass}" style="width: ${data.cpu_percent}%"></div>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Memory Usage</span>
+                    <span class="metric-value">${data.memory_percent}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill ${memClass}" style="width: ${data.memory_percent}%"></div>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Disk Usage</span>
+                    <span class="metric-value">${data.disk_percent}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill ${diskClass}" style="width: ${data.disk_percent}%"></div>
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Memory Used</span>
+                    <span class="metric-value">${data.memory_used_gb}GB / ${data.memory_total_gb}GB</span>
+                </div>
+            `;
+            document.getElementById('system-health').innerHTML = systemHealthHtml;
+        }
+
+        async function loadRevenueSummary() {
+            const data = await fetchJSON('/admin-api/revenue/summary');
+            if (!data) return;
+
+            const revenueSummaryHtml = `
+                <div class="metric">
+                    <span class="metric-label">Active Subscriptions</span>
+                    <span class="metric-value">${data.active_subscriptions}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Monthly Recurring Revenue</span>
+                    <span class="metric-value status-healthy">$${data.monthly_recurring_revenue.toLocaleString()}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Average Revenue Per User</span>
+                    <span class="metric-value">$${data.average_revenue_per_user}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Estimated Annual Revenue</span>
+                    <span class="metric-value">$${data.estimated_annual_revenue.toLocaleString()}</span>
+                </div>
+            `;
+            document.getElementById('revenue-summary').innerHTML = revenueSummaryHtml;
+        }
+
+        async function loadBotDetails() {
+            const data = await fetchJSON('/admin-api/bots/status');
+            if (!data) return;
+
+            if (data.bots.length === 0) {
+                document.getElementById('bot-details').innerHTML = '<div class="alert alert-info">No bots found in the system.</div>';
+                return;
+            }
+
+            let tableHtml = `
+                <table class="bots-table">
+                    <thead>
+                        <tr>
+                            <th>User Email</th>
+                            <th>Bot Type</th>
+                            <th>Status</th>
+                            <th>Container</th>
+                            <th>Health</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            data.bots.forEach(bot => {
+                const statusClass = bot.status === 'running' ? 'status-running' : 
+                                  bot.status === 'stopped' ? 'status-stopped' : 'status-unknown';
+                
+                const containerClass = bot.container_status === 'running' ? 'status-running' : 
+                                     bot.container_status === 'exited' ? 'status-stopped' : 'status-unknown';
+
+                tableHtml += `
+                    <tr>
+                        <td>${bot.user_email}</td>
+                        <td>${bot.bot_type.toUpperCase()}</td>
+                        <td><span class="status-badge ${statusClass}">${bot.status}</span></td>
+                        <td><span class="status-badge ${containerClass}">${bot.container_status}</span></td>
+                        <td><span class="status-badge">${bot.container_health}</span></td>
+                        <td>${new Date(bot.created_at).toLocaleDateString()}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += '</tbody></table>';
+            document.getElementById('bot-details').innerHTML = tableHtml;
+        }
+
+        async function loadAlerts() {
+            const data = await fetchJSON('/admin-api/alerts');
+            if (!data) return;
+
+            const alertsSection = document.getElementById('alerts-section');
+            
+            if (data.alerts.length === 0) {
+                alertsSection.innerHTML = '<div class="alert alert-info">✅ All systems operational - no alerts at this time.</div>';
+                return;
+            }
+
+            let alertsHtml = '';
+            data.alerts.forEach(alert => {
+                const alertClass = alert.severity === 'critical' ? 'alert-error' : 'alert-warning';
+                alertsHtml += `
+                    <div class="alert ${alertClass}">
+                        <strong>${alert.severity.toUpperCase()}:</strong> ${alert.message}
+                        <small style="display: block; margin-top: 0.5rem; opacity: 0.8;">
+                            ${new Date(alert.timestamp).toLocaleString()}
+                        </small>
+                    </div>
+                `;
+            });
+
+            alertsSection.innerHTML = alertsHtml;
+        }
+
+        // News Management Functions
+        async function loadUpcomingNews() {
+            try {
+                const data = await fetchJSON('/admin-api/news/upcoming');
+                if (!data) return;
+
+                const newsListDiv = document.getElementById('upcoming-news-list');
+                
+                if (data.events.length === 0) {
+                    newsListDiv.innerHTML = '<div class="alert alert-info">✅ No high-impact news events scheduled for the next 7 days.</div>';
+                    return;
+                }
+
+                let newsHtml = '';
+                data.events.forEach(event => {
+                    // Parse event time - backend now sends UTC with timezone info
+                    let eventTime;
+                    if (event.event_time.includes('Z')) {
+                        // UTC time (ends with Z)
+                        eventTime = new Date(event.event_time);
+                    } else if (event.event_time.includes('+') || event.event_time.includes('-')) {
+                        // Timezone-aware time (e.g., 2025-07-29T10:00:00+00:00 or -04:00)
+                        eventTime = new Date(event.event_time);
+                    } else {
+                        // If no timezone info, assume it's UTC (stored as UTC)
+                        // Add 'Z' to explicitly mark as UTC
+                        eventTime = new Date(event.event_time + 'Z');
+                    }
+                    
+                    const now = new Date();
+                    const timeDiff = eventTime - now;
+                    const hoursUntil = Math.round(timeDiff / (1000 * 60 * 60));
+                    
+                    let countdownText;
+                    if (hoursUntil < 0) {
+                        countdownText = '⚠️ PASSED';
+                    } else if (hoursUntil < 1) {
+                        const minutesUntil = Math.round(timeDiff / (1000 * 60));
+                        countdownText = `⚠️ ${minutesUntil} minutes`;
+                    } else if (hoursUntil < 24) {
+                        countdownText = `⚠️ ${hoursUntil} hours`;
+                    } else {
+                        const daysUntil = Math.round(hoursUntil / 24);
+                        countdownText = `${daysUntil} days`;
+                    }
+
+                    // Format time in EST/EDT
+                    const estTime = eventTime.toLocaleString('en-US', {
+                        timeZone: 'America/New_York',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZoneName: 'short'
+                    });
+
+                    newsHtml += `
+                        <div class="news-event">
+                            <div class="news-event-header">
+                                <span class="news-event-title">${event.title}</span>
+                                <span class="news-event-currency">${event.currency}</span>
+                            </div>
+                            <div class="news-event-time">${estTime}</div>
+                            <div class="news-event-countdown">${countdownText}</div>
+                        </div>
+                    `;
+                });
+
+                newsListDiv.innerHTML = newsHtml;
+            } catch (error) {
+                console.error('Error loading upcoming news:', error);
+                document.getElementById('upcoming-news-list').innerHTML = '<div class="error-message">Failed to load upcoming news events.</div>';
+            }
+        }
+
+        async function addNewsEvent(formData) {
+            try {
+                const response = await fetch('/admin-api/news/add', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('✅ News event added successfully!');
+                    document.getElementById('news-form').reset();
+                    await loadUpcomingNews(); // Refresh the list
+                    return true;
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Error: ${error.detail || 'Failed to add news event'}`);
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error adding news event:', error);
+                alert('❌ Connection error adding news event');
+                return false;
+            }
+        }
+
+        // Initialize news form handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsForm = document.getElementById('news-form');
+            if (newsForm) {
+                newsForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = newsForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = '⏳ Adding...';
+                    
+                    try {
+                        const formData = {
+                            title: document.getElementById('news-title').value,
+                            currency: document.getElementById('news-currency').value,
+                            impact: document.getElementById('news-impact').value,
+                            event_time: `${document.getElementById('news-date').value}T${document.getElementById('news-time').value}:00`
+                        };
+                        
+                        await addNewsEvent(formData);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
