@@ -40,6 +40,10 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
+# ——— API routes ———
+from app.api.routes import news_avoidance_router
+app.include_router(news_avoidance_router, prefix="/api/news-avoidance", tags=["news-avoidance"])
+
 # ——— Web (Jinja2) routes ———
 from app.web.routes.pages import router as pages_router
 app.include_router(pages_router)
